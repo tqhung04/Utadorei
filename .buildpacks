@@ -1,2 +1,4 @@
 https://github.com/shunjikonishi/heroku-buildpack-ffmpeg
-https://github.com/tqhung04/heroku-buildpack-multi
+https://github.com/heroku/heroku-buildpack-play
+
+ollar/heroku-buildpack-multi

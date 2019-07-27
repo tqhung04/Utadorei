@@ -8,6 +8,7 @@ bot.once('ready', () => {
   console.log('Ready!');
 });
 
+console.log(token);
 bot.login(token);
 
 bot.on('message', message => {

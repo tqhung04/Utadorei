@@ -4,17 +4,27 @@
   "description": "Music for adults",
   "main": "server.js",
   "dependencies": {
+    "@discordjs/uws": "^10.149.0",
+    "bufferutil": "^4.0.1",
     "discord.js": "^11.5.1",
+    "erlpack": "github:discordapp/erlpack",
     "eslint": "^6.1.0",
     "express": "^4.17.1",
     "ffmpeg-binaries": "^4.0.0",
-    "node-opus": "^0.3.2",
+    "libsodium-wrappers": "^0.7.5",
+    "node-opus": "^0.2.7",
+    "opusscript": "0.0.6",
+    "sodium": "^2.0.3",
     "ytdl-core": "^0.29.3"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tqhung04/Chatbot_Music.git"
   },
   "author": "",
   "license": "ISC"

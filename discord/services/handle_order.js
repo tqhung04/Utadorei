@@ -48,7 +48,7 @@ function handleGoVoiceChannel(message) {
 function play(connection, message) {
   let server = servers[message.guild.id];
   server.dispatcher = connection.playStream(
-    ytdl(server.queue[0], {filter: 'audioonly'})
+    ytdl(server.queue[0])
   );
   console.log('Playing ' + server.queue[0]);
   server.queue.shift();

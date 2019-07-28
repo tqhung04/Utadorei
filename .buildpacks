@@ -1,1 +1,3 @@
-https://github.com/tqhung04/heroku-buildpack-ffmpeg-latest.git
+https://github.com/heroku/heroku-buildpack-nodejs.git
+https://github.com/akomic/heroku-buildpack-ffmpeg.git
+https://github.com/akomic/heroku-buildpack-ffmpegthumbnailer.git

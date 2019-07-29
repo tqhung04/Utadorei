@@ -24,7 +24,6 @@ async function call(message) {
 
   const responses = await sessionClient.detectIntent(request);
   const result = responses[0].queryResult;
-  console.log(result.intent);
   if (result.intent) {
     switch (result.intent.displayName) {
       case 'IPlay':

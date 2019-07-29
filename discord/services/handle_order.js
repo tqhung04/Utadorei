@@ -33,6 +33,9 @@ function call(message) {
     case 'govoicechannel':
       handleGoVoiceChannel(message);
       break;
+    case 'np':
+      handleNp(message);
+      break;
   }
 }
 
@@ -47,13 +50,15 @@ function handleGoVoiceChannel(message) {
 
 function play(connection, message) {
   let server = servers[message.guild.id];
+  let unplay_queue = getFirstUnPlayedQueue(server.queue);
   server.dispatcher = connection.playStream(
-    ytdl(server.queue[0], {filter: 'audioonly'})
+    ytdl(unplay_queue.url)
   );
-  console.log('Playing ' + server.queue[0]);
-  server.queue.shift();
+  console.log('Playing ' + unplay_queue.url);
+  unplay_queue.status = 1;
   server.dispatcher.on('end', function() {
-    if(server.queue[0]) { play(connection, message); }
+    let unplay_queue = getFirstUnPlayedQueue(server.queue);
+    if(unplay_queue) { play(connection, message); }
     else { connection.disconnect(); }
   });
 }
@@ -82,7 +87,12 @@ function handlePlay(message, url) {
   if (!isValidCommand(message, url)) { return; }
 
   if (!servers[message.guild.id]) { servers[message.guild.id] = {queue: []}; }
-  servers[message.guild.id].queue.push(url);
+  servers[message.guild.id].queue.push({
+    url: url,
+    status: 0
+  });
+
+  console.log(servers[message.guild.id].queue);
 
   if (!message.guild.voiceConnection) {
     message.member.voiceChannel.join()
@@ -111,6 +121,30 @@ function handlePlayNow(message, url) {
     return;
   }
 
-  server.queue.splice(1, 0, url);
+  server.queue.splice(1, 0, {
+    url: url,
+    status: 0
+  });
   server.dispatcher.end();
+}
+
+function handleNp(message) {
+  let server = servers[message.guild.id];
+  let current_queue = getCurrentQueue(server.queue);
+  if(!server) { return; }
+  ytdl.getBasicInfo(current_queue.url).then(info => {
+    message.reply(`\n Title: ${info.title} \n Author: ${info.author.name} \n Link: ${current_queue.url}`);
+  });
+}
+
+function getCurrentQueue(queues) {
+  return queues.filter(function(queue) {
+    return queue.status === 1;
+  }).slice(-1)[0];
+}
+
+function getFirstUnPlayedQueue(queues) {
+  return queues.filter(function(queue) {
+    return queue.status === 0;
+  })[0];
 }

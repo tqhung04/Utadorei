@@ -1,6 +1,8 @@
 # Utadorei Chatbot
 
-## Commands
+![img](https://cdn.discordapp.com/avatars/604518180098015245/041ba141be2ecb4678fc2a2e4fea23c9.png?size=256)
+
+## Commands:
 
 | Command        | Description                                          |
 |----------------|------------------------------------------------------|

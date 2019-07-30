@@ -36,6 +36,9 @@ function call(message) {
     case 'np':
       handleNp(message);
       break;
+    case 'list':
+      handleList(message);
+      break;
   }
 }
 
@@ -130,10 +133,14 @@ function handlePlayNow(message, url) {
 
 function handleNp(message) {
   let server = servers[message.guild.id];
+  if(!server || !server.queue) {
+    message.reply("There is not things.");
+    return;
+  }
   let current_queue = getCurrentQueue(server.queue);
   if(!server) { return; }
   ytdl.getBasicInfo(current_queue.url).then(info => {
-    message.reply(`\n Title: ${info.title} \n Author: ${info.author.name} \n Link: ${current_queue.url}`);
+    message.reply(getInfoMsg(info, current_queue.url));
   });
 }
 
@@ -147,4 +154,30 @@ function getFirstUnPlayedQueue(queues) {
   return queues.filter(function(queue) {
     return queue.status === 0;
   })[0];
+}
+
+async function handleList(message) {
+  let server = servers[message.guild.id];
+  if(!server || !server.queue) {
+    message.reply("There is not things.");
+    return;
+  }
+  let msg = "";
+  server.queue.forEach(function(queue) {
+    ytdl.getBasicInfo(queue.url).then(info => {
+      msg += getInfoMsg(info, queue.url) + '\n --------------------------';
+      console.log(msg);
+    });
+  });
+
+  await delay();
+  message.reply(msg);
+}
+
+function getInfoMsg(info, url) {
+  return `\n Title: ${info.player_response.videoDetails.title} \n Author: ${info.author.name} \n Link: ${url}`;
+}
+
+function delay() {
+  return new Promise(resolve => setTimeout(resolve, 1000));
 }

@@ -12,7 +12,7 @@
 | playnow        | Adds a song to the top of the queue and skips to it. |
 | govoicechannel | Summons the bot to your voice channel.               |
 | np             | Shows what song the bot is currently playing.        |
-| list           | View the queue                                       |
+| list           | View the play list                                   |
 
 ## Link to invite my bot: 
 

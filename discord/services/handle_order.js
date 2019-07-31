@@ -30,8 +30,8 @@ function call(message) {
     case 'playnow':
       handlePlayNow(message, args[0]);
       break;
-    case 'govoicechannel':
-      handleGoVoiceChannel(message);
+    case 'join':
+      handleJoin(message);
       break;
     case 'np':
       handleNp(message);
@@ -39,7 +39,7 @@ function call(message) {
   }
 }
 
-function handleGoVoiceChannel(message) {
+function handleJoin(message) {
   if (!message.guild.voiceConnection) {
     message.member.voiceChannel.join()
       .then(connection => {

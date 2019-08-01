@@ -10,7 +10,7 @@
 | skip           | Skips the currently playing song.                    |
 | stop           | Disconnect the bot from the voice channel it is in.  |
 | playnow        | Adds a song to the top of the queue and skips to it. |
-| govoicechannel | Summons the bot to your voice channel.               |
+| join           | Summons the bot to your voice channel.               |
 | np             | Shows what song the bot is currently playing.        |
 | list           | View the play list                                   |
 

@@ -11,13 +11,13 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
 var TOKEN_PATH = TOKEN_DIR + 'utadorei.json';
 
 // Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+fs.readFile('../../client_secret.json', function processClientSecrets(err, content) {
   if (err) {
     console.log('Error loading client secret file: ' + err);
     return;
   }
   // Authorize a client with the loaded credentials, then call the YouTube API.
-  authorize(JSON.parse(content), getChannel);
+  authorize(JSON.parse(content), getVideoLink);
 });
 
 /**
@@ -34,6 +34,7 @@ function authorize(credentials, callback) {
   var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
 
   // Check if we have previously stored a token.
+  console.log(TOKEN_PATH);
   fs.readFile(TOKEN_PATH, function(err, token) {
     if (err) {
       getNewToken(oauth2Client, callback);
@@ -121,6 +122,28 @@ function getChannel(auth) {
                   channels[0].id,
                   channels[0].snippet.title,
                   channels[0].statistics.viewCount);
+    }
+  });
+}
+
+function getVideoLink(auth) {
+  var service = google.youtube('v3');
+  service.search.list({
+    auth: auth,
+    part: 'snippet',
+    myRating: 'like',
+    maxResults: 10,
+    q: "Ăn gì chơi gì ở Enoshima?"
+  }, function(err, response) {
+    if (err) {
+      console.log('The API returned an error: ' + err);
+      return;
+    }
+    var channels = response.data.items;
+    if (channels.length == 0) {
+      console.log('No channel found.');
+    } else {
+      console.log(channels);
     }
   });
 }

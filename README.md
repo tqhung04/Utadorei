@@ -14,6 +14,13 @@
 | np             | Shows what song the bot is currently playing.        |
 | list           | View the play list                                   |
 
-## Link to invite my bot: 
+## Link to invite my bot:
 
 `https://discordapp.com/oauth2/authorize?&client_id=604518180098015245&scope=bot&permissions=66582848`
+
+## Getting Started with Authentication
+https://cloud.google.com/docs/authentication/getting-started
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
+```

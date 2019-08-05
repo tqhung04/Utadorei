@@ -1,5 +1,5 @@
 const dialogflow = require('dialogflow');
-const { projectId } = require('../config.json');
+const { project_id } = require('../config.json');
 const uuid = require('uuid');
 const IPlay = require('../intents/iPlay.js');
 const I18n = require('../../i18n/discord/services/handle_chat.json');
@@ -11,7 +11,7 @@ module.exports = {
 async function call(message) {
   const sessionId = uuid.v4();
   const sessionClient = new dialogflow.SessionsClient();
-  const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+  const sessionPath = sessionClient.sessionPath(project_id, sessionId);
 
   const request = {
     session: sessionPath,
@@ -31,12 +31,11 @@ async function call(message) {
       case 'IPlay':
         IPlay.call(message, result);
         break;
+      default:
+        message.reply(I18n.no_match_intent);
+        break;
     }
   } else {
-    handle_no_match_itent(message);
+    message.reply(I18n.no_match_intent);
   }
-}
-
-function handle_no_match_itent(message) {
-  message.reply(I18n.no_match_intent);
 }

@@ -1,3 +1,5 @@
+const I18n = require('../../i18n/discord/intents/iPlay.json');
+
 module.exports = {
   call: call
 }
@@ -10,10 +12,10 @@ function call(message, result) {
 function filterKeyWord(message, fields) {
   let artist = fields['eArtist'] || fields['music-artist']
   if (isExist(artist.stringValue)) {
-    return `I got it!. Playing music of ${artist.stringValue}`;
+    return `${I18n.playing} ${artist.stringValue}`;
   }
 
-  return "Music of?";
+  return I18n.no_artist;
 }
 
 function isExist(param) {

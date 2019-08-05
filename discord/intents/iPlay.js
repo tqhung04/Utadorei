@@ -4,21 +4,20 @@ module.exports = {
 
 function call(message, result) {
   keyword = filterKeyWord(message, result.parameters.fields);
-  console.log(keyword);
-
   message.reply(keyword);
 }
 
 function filterKeyWord(message, fields) {
-  if (!isExist(fields['eActionMusic'])) {
-    return message.content;
+  let artist = fields['eArtist'] || fields['music-artist']
+  if (isExist(artist.stringValue)) {
+    return `I got it!. Playing music of ${artist.stringValue}`;
   }
 
-  return message.content.replace(fields['eActionMusic'].stringValue,'');
+  return "Music of?";
 }
 
 function isExist(param) {
-  if(typeof param == 'undefined') {
+  if(typeof param == 'undefined' || param === '') {
     return false;
   } else {
     return true;

@@ -2,6 +2,7 @@ const dialogflow = require('dialogflow');
 const { projectId } = require('../config.json');
 const uuid = require('uuid');
 const IPlay = require('../intents/iPlay.js');
+const I18n = require('../../i18n/discord/services/handle_chat.json');
 
 module.exports = {
   call: call
@@ -25,6 +26,7 @@ async function call(message) {
   const responses = await sessionClient.detectIntent(request);
   const result = responses[0].queryResult;
   if (result.intent) {
+    console.log(result.intent);
     switch (result.intent.displayName) {
       case 'IPlay':
         IPlay.call(message, result);
@@ -36,5 +38,5 @@ async function call(message) {
 }
 
 function handle_no_match_itent(message) {
-  message.reply('Sorry, I do not understand.');
+  message.reply(I18n.no_match_intent);
 }

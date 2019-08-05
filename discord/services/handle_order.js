@@ -1,14 +1,9 @@
 const { prefix } = require('../config.json');
 const ytdl = require('ytdl-core');
+const I18n = require('../../i18n/discord/services/handle_order.json');
 
 module.exports = {
-  call: call,
-  play: play,
-  isValidCommand: isValidCommand,
-  handlePlay: handlePlay,
-  handleSkip: handleSkip,
-  handleStop: handleStop,
-  handlePlayNow: handlePlayNow
+  call: call
 }
 
 let servers = {};
@@ -43,6 +38,11 @@ function call(message) {
 }
 
 function handleJoin(message) {
+  if (!message.member.voiceChannel) {
+    message.reply(I18n.no_channel);
+    return false;
+  }
+
   if (!message.guild.voiceConnection) {
     message.member.voiceChannel.join()
       .then(connection => {
@@ -68,18 +68,18 @@ function play(connection, message) {
 
 function isValidCommand(message, url) {
   if (!url) {
-    message.reply('Chủ nhân phải nhập link bài hát vào đi.');
+    message.reply(I18n.no_given_link);
     return false;
   }
 
   let reg = /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/gm;
   if (!url.match(reg)) {
-    message.reply('Em không hiểu được link này. Chủ nhân có nhập đúng link youtue không?');
+    message.reply(I18n.no_youtube_link_format);
     return false;
   }
 
   if (!message.member.voiceChannel) {
-    message.reply('Mời chủ nhân vào voice channel trước.');
+    message.reply(I18n.no_channel);
     return false;
   }
 
@@ -134,7 +134,7 @@ function handlePlayNow(message, url) {
 function handleNp(message) {
   let server = servers[message.guild.id];
   if(!server || !server.queue) {
-    message.reply("There is not things.");
+    message.reply(I18n.no_song_is_playing);
     return;
   }
   let current_queue = getCurrentQueue(server.queue);
@@ -159,7 +159,7 @@ function getFirstUnPlayedQueue(queues) {
 async function handleList(message) {
   let server = servers[message.guild.id];
   if(!server || !server.queue) {
-    message.reply("There is not things.");
+    message.reply(I18n.no_song_is_playing);
     return;
   }
   let msg = "";
@@ -175,7 +175,7 @@ async function handleList(message) {
 }
 
 function getInfoMsg(info, url) {
-  return `\n Title: ${info.player_response.videoDetails.title} \n Author: ${info.author.name} \n Link: ${url}`;
+  return `\n ${I18n.title}: ${info.player_response.videoDetails.title} \n ${I18n.author}: ${info.author.name} \n ${I18n.link}: ${url}`;
 }
 
 function delay() {

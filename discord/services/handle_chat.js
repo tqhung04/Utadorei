@@ -12,7 +12,6 @@ async function call(message) {
   const sessionId = uuid.v4();
   const sessionClient = new dialogflow.SessionsClient();
   const sessionPath = sessionClient.sessionPath(project_id, sessionId);
-
   const request = {
     session: sessionPath,
     queryInput: {
@@ -23,19 +22,24 @@ async function call(message) {
     },
   };
 
+  console.log(request);
+  console.log(await sessionClient.detectIntent(request));
   const responses = await sessionClient.detectIntent(request);
-  const result = responses[0].queryResult;
-  if (result.intent) {
-    console.log(result.intent);
-    switch (result.intent.displayName) {
-      case 'IPlay':
-        IPlay.call(message, result);
-        break;
-      default:
-        message.reply(I18n.no_match_intent);
-        break;
-    }
-  } else {
-    message.reply(I18n.no_match_intent);
-  }
+  // return
+  // const responses = await sessionClient.detectIntent(request);
+  // console.log(responses);
+  // const result = responses[0].queryResult;
+  // message.reply(I18n.no_match_intent);
+  // if (result.intent) {
+  //   switch (result.intent.displayName) {
+  //     case 'IPlay':
+  //       IPlay.call(message, result);
+  //       break;
+  //     default:
+  //       message.reply(I18n.no_match_intent);
+  //       break;
+  //   }
+  // } else {
+  //   message.reply(I18n.no_match_intent);
+  // }
 }
